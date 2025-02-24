@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Add Comment{% endblock %}
+
+{% block content %}
+<h1>Add Comment to {{ flashcard_set.name }}</h1>
+<form method="post" action="" class="mt-4">
+  <div class="mb-3">
+    <label for="author" class="form-label">Your Name (optional):</label>
+    <input type="text" id="author" name="author" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label for="comment" class="form-label">Comment:</label>
+    <textarea name="comment" id="comment" class="form-control" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit Comment</button>
+</form>
+<a class="btn btn-link mt-3" href="{{ url_for('set_detail', set_id=flashcard_set.id) }}">Back to Set Details</a>
+{% endblock %}

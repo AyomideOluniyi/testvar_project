@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ flashcard_set.name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1>{{ flashcard_set.name }}</h1>
+      <p>Created on: {{ flashcard_set.created_at.strftime('%Y-%m-%d') }}</p>
+      
+     
+      <a class="btn btn-primary mb-3" href="/sets/{{ flashcard_set.id }}/cards/new">Add New Flashcard</a>
+      
+      <h2>Flashcards:</h2>
+      <ul class="list-group mb-4">
+        {% for card in flashcard_set.flashcards %}
+        <li class="list-group-item">
+          {% if card.hidden %}
+          <p class="text-muted"><em>Hidden Flashcard</em></p>
+          {% endif %}
+          <p><strong>Question:</strong> {{ card.question }}</p>
+          <button class="btn btn-secondary" onclick="showAnswer(this, '{{ card.id }}', '{{ flashcard_set.id }}')">Show Answer</button>
+          <p id="answer{{ card.id }}" style="display:none;" class="mt-2"><strong>Answer:</strong> {{ card.answer }}</p>
+        </li>
+        {% else %}
+        <li class="list-group-item">No flashcards yet.</li>
+        {% endfor %}
+      </ul>
+      
+ 
+      <h2>Comments:</h2>
+      <ul class="list-group mb-4">
+        {% for comment in flashcard_set.comments %}
+        <li class="list-group-item">
+          <strong>{{ comment.author or "Anonymous" }}:</strong> {{ comment.comment }}
+        </li>
+        {% else %}
+        <li class="list-group-item">No comments yet.</li>
+        {% endfor %}
+      </ul>
+      <a class="btn btn-info mb-4" href="{{ url_for('add_comment', set_id=flashcard_set.id) }}">Add a Comment</a>
+      
+     
+      <h2>Reviews:</h2>
+      {% set total = 0 %}
+      {% set count = 0 %}
+      {% for review in flashcard_set.reviews %}
+        {% set total = total + review.rating %}
+        {% set count = count + 1 %}
+      {% endfor %}
+      {% if count > 0 %}
+      <p>Average Rating: {{ '%.1f'|format(total/count) }} (based on {{ count }} reviews)</p>
+      {% else %}
+      <p>No reviews yet.</p>
+      {% endif %}
+      <ul class="list-group mb-4">
+        {% for review in flashcard_set.reviews %}
+        <li class="list-group-item">
+          <strong>{{ review.author or "Anonymous" }} ({{ review.rating }} stars):</strong>
+          {{ review.review_text or '' }}
+        </li>
+        {% endfor %}
+      </ul>
+      <a class="btn btn-info mb-4" href="{{ url_for('add_review', set_id=flashcard_set.id) }}">Add a Review</a>
+      
+      <a class="btn btn-link" href="/sets">Back to Flashcard Sets</a>
+    </div>
+    
+  
+    <script>
+      function showAnswer(btn, cardId, setId) {
+        document.getElementById('answer' + cardId).style.display = 'block';
+       
+        fetch('/telemetry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            flashcard_set_id: setId,
+            flashcard_id: cardId,
+            event: 'show_answer'
+          })
+        }).catch(error => console.error('Error sending telemetry:', error));
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

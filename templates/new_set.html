@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Create New Flashcard Set{% endblock %}
+
+{% block content %}
+<h1>Create a New Flashcard Set</h1>
+<form action="/sets/new" method="post" class="mt-4">
+  <div class="mb-3">
+    <label for="name" class="form-label">Set Name:</label>
+    <input type="text" id="name" name="name" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+<a class="btn btn-link mt-3" href="/sets">Back to Flashcard Sets</a>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Welcome to TestVar Flashcards{% endblock %}
+
+{% block content %}
+<div class="jumbotron p-5 mb-4 bg-light rounded-3">
+  <div class="container py-5">
+    <h1 class="display-4">Welcome to TestVar Flashcards</h1>
+    <p class="lead">The ultimate platform to create, share, and study flashcards!</p>
+    <hr class="my-4">
+    <p>Get started by exploring flashcard sets or creating your own.</p>
+    <a class="btn btn-success btn-lg" href="{{ url_for('list_sets') }}" role="button">View Flashcard Sets</a>
+  </div>
+</div>
+{% endblock %}

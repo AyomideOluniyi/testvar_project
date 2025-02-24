@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Flashcard Sets{% endblock %}
+
+{% block content %}
+<h1>Flashcard Sets</h1>
+<ul class="list-group mt-4">
+  {% for set in sets %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <a href="/sets/{{ set.id }}">{{ set.name }}</a>
+    <span class="badge bg-secondary">{{ set.created_at.strftime('%Y-%m-%d') }}</span>
+  </li>
+  {% else %}
+  <li class="list-group-item">No flashcard sets available.</li>
+  {% endfor %}
+</ul>
+<a class="btn btn-primary mt-4" href="/sets/new">Create a New Flashcard Set</a>
+{% endblock %}

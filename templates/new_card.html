@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Add New Flashcard{% endblock %}
+
+{% block content %}
+<h1>Add New Flashcard to "{{ flashcard_set.name }}"</h1>
+<form action="" method="post" class="mt-4">
+  <div class="mb-3">
+    <label for="question" class="form-label">Question:</label>
+    <input type="text" id="question" name="question" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="answer" class="form-label">Answer:</label>
+    <input type="text" id="answer" name="answer" class="form-control" required>
+  </div>
+  <div class="form-check mb-3">
+    <input type="checkbox" id="hidden" name="hidden" class="form-check-input">
+    <label for="hidden" class="form-check-label">Hidden</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Add Flashcard</button>
+</form>
+<a class="btn btn-link mt-3" href="{{ url_for('set_detail', set_id=flashcard_set.id) }}">Back to Set Details</a>
+{% endblock %}
