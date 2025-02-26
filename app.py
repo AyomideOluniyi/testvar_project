@@ -141,6 +141,15 @@ def admin_daily_limit():
 def api_version():
     return jsonify({"version": "1.0.0"})
 
+@app.route('/sets/<int:set_id>', methods=['DELETE'])
+def delete_set(set_id):
+    flashcard_set = FlashcardSet.query.get(set_id)
+    if not flashcard_set:
+        return jsonify({"message": "Flashcard set not found"}), 404
+    db.session.delete(flashcard_set)
+    db.session.commit()
+    return '', 204
+
 if __name__ == '__main__':
     app.run(debug=True)
 
